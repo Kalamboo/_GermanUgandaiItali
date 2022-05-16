@@ -5,12 +5,14 @@
  */
 package view;
 
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.Icon;
+import java.io.File;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -23,8 +25,7 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("res/ikon.jpg")));
-        
+        this.setIconImage(kiskep(1));
     }
 
     /**
@@ -42,7 +43,7 @@ public class MainForm extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         menuRadioCsop = new javax.swing.ButtonGroup();
         feluletRadioCsop = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
+        nagyKep = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -99,10 +100,10 @@ public class MainForm extends javax.swing.JFrame {
         setIconImage(getIconImage());
         setPreferredSize(new java.awt.Dimension(406, 580));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/res/Blackjack-singlehand.jpg"))); // NOI18N
-        jLabel1.setMaximumSize(new java.awt.Dimension(376, 250));
-        jLabel1.setMinimumSize(new java.awt.Dimension(376, 250));
-        jLabel1.setPreferredSize(new java.awt.Dimension(376, 250));
+        nagyKep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/res/Blackjack-singlehand.jpg"))); // NOI18N
+        nagyKep.setMaximumSize(new java.awt.Dimension(376, 250));
+        nagyKep.setMinimumSize(new java.awt.Dimension(376, 250));
+        nagyKep.setPreferredSize(new java.awt.Dimension(376, 250));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Játékos"));
 
@@ -179,6 +180,11 @@ public class MainForm extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton3.setText("Mentés");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         feluletRadioCsop.add(jRadioButton1);
         jRadioButton1.setText("Lapokat felsorol");
@@ -224,6 +230,11 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem1.setText("Mentés");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Kilépés");
@@ -257,7 +268,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nagyKep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -268,7 +279,7 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nagyKep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -283,6 +294,52 @@ public class MainForm extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mentes(){
+        JFileChooser f = new JFileChooser();
+        FileNameExtensionFilter filterKepek = new FileNameExtensionFilter("*.jpg, *.gif", "jpg", "gif");
+        FileNameExtensionFilter filterSzoveg = new FileNameExtensionFilter("*.txt", "txt");
+        f.addChoosableFileFilter(filterKepek);
+        f.addChoosableFileFilter(filterSzoveg);
+        f.setFileFilter(filterSzoveg);
+        f.setCurrentDirectory(new File("."));
+        f.setDialogTitle("Menyitás");
+        f.showOpenDialog(this); 
+        kepValaszto(f.getSelectedFile());
+    }
+    
+    private int kepValaszto(File file){
+        JFrame ablak = new JFrame();
+        ImageIcon icon = new ImageIcon("src/view/res/ikon.jpg");
+        String szoveg = "Fájl neve: " + file.getName() +
+                "\nElérése: " + file.getPath();
+        int input = JOptionPane.showConfirmDialog(ablak, szoveg, "Kérdés", 2, JOptionPane.QUESTION_MESSAGE, icon);
+        return input;
+    }
+    
+    private Image kiskep(int szam){
+        String kepUt = "";
+        switch (szam) {
+            case 1:
+                kepUt = "res/logo.png";
+                break;
+            case 2:
+                kepUt = "res/ikon.jpg";
+                break;
+            default:
+                kepUt = "res/Blackjack-singlehand.jpg";
+                break;
+        }
+        return Toolkit.getDefaultToolkit().getImage(getClass().getResource(kepUt));
+    }
+    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        mentes();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        mentes();
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     
     /**
@@ -327,7 +384,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -349,5 +405,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.ButtonGroup menuRadioCsop;
+    private javax.swing.JLabel nagyKep;
     // End of variables declaration//GEN-END:variables
 }
