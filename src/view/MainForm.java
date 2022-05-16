@@ -273,7 +273,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    int kek = 0;
+    int kek = 5;
     
     /**
      * @param args the command line arguments
