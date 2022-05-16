@@ -5,6 +5,13 @@
  */
 package view;
 
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
 /**
  *
  * @author 36204
@@ -16,6 +23,8 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("res/ikon.jpg")));
+        
     }
 
     /**
@@ -86,6 +95,8 @@ public class MainForm extends javax.swing.JFrame {
         jRadioButton2.setToolTipText("");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Black Jack");
+        setIconImage(getIconImage());
         setPreferredSize(new java.awt.Dimension(406, 580));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/res/Blackjack-singlehand.jpg"))); // NOI18N
@@ -273,7 +284,6 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    int kek = 51;
     
     /**
      * @param args the command line arguments
