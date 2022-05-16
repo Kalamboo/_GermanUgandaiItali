@@ -61,7 +61,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        kilepesMenu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
@@ -95,10 +95,15 @@ public class MainForm extends javax.swing.JFrame {
         jRadioButton2.setText("Lapokat felsorol");
         jRadioButton2.setToolTipText("");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Black Jack");
         setIconImage(getIconImage());
         setPreferredSize(new java.awt.Dimension(406, 580));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         nagyKep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/res/Blackjack-singlehand.jpg"))); // NOI18N
         nagyKep.setMaximumSize(new java.awt.Dimension(376, 250));
@@ -194,6 +199,11 @@ public class MainForm extends javax.swing.JFrame {
         jRadioButton3.setSelected(true);
         jRadioButton3.setText("Lapok összértéke");
         jRadioButton3.setToolTipText("");
+        jRadioButton3.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jRadioButton3StateChanged(evt);
+            }
+        });
 
         jCheckBox1.setText("Kilépésnél ment");
 
@@ -237,8 +247,13 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Kilépés");
-        jMenu1.add(jMenuItem2);
+        kilepesMenu.setText("Kilépés");
+        kilepesMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kilepesMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(kilepesMenu);
 
         jMenuBar1.add(jMenu1);
 
@@ -251,6 +266,11 @@ public class MainForm extends javax.swing.JFrame {
         menuRadioCsop.add(jRadioButtonMenuItem2);
         jRadioButtonMenuItem2.setSelected(true);
         jRadioButtonMenuItem2.setText("Nem kockáztat");
+        jRadioButtonMenuItem2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jRadioButtonMenuItem2StateChanged(evt);
+            }
+        });
         jMenu2.add(jRadioButtonMenuItem2);
 
         jMenuBar1.add(jMenu2);
@@ -295,6 +315,8 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean voltValtozas = false;
+    
     private void mentes(){
         JFileChooser f = new JFileChooser();
         FileNameExtensionFilter filterKepek = new FileNameExtensionFilter("*.jpg, *.gif", "jpg", "gif");
@@ -305,16 +327,21 @@ public class MainForm extends javax.swing.JFrame {
         f.setCurrentDirectory(new File("."));
         f.setDialogTitle("Menyitás");
         f.showOpenDialog(this); 
-        kepValaszto(f.getSelectedFile());
+        File kivalasztott = f.getSelectedFile();
+        String szoveg = "Fájl neve: " + kivalasztott.getName() +
+                "\nElérése: " + kivalasztott.getPath();
+        felugro(szoveg);
     }
     
-    private int kepValaszto(File file){
+    private int felugro(String szoveg){
         JFrame ablak = new JFrame();
-        ImageIcon icon = new ImageIcon("src/view/res/ikon.jpg");
-        String szoveg = "Fájl neve: " + file.getName() +
-                "\nElérése: " + file.getPath();
+        ImageIcon icon = new ImageIcon(kiskep(2));;
         int input = JOptionPane.showConfirmDialog(ablak, szoveg, "Kérdés", 2, JOptionPane.QUESTION_MESSAGE, icon);
         return input;
+    }
+    
+    private void valtoz(){
+        voltValtozas = true;
     }
     
     private Image kiskep(int szam){
@@ -333,6 +360,19 @@ public class MainForm extends javax.swing.JFrame {
         return Toolkit.getDefaultToolkit().getImage(getClass().getResource(kepUt));
     }
     
+    private void kilep(){
+        
+        if (voltValtozas) {
+            int valasz = felugro("Biztos kilép?");
+            if (valasz == 0) {
+                System.exit(0);
+            }
+        }else{
+            System.exit(0);
+        }
+        
+    }
+    
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         mentes();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -340,6 +380,22 @@ public class MainForm extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         mentes();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        kilep();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void kilepesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kilepesMenuActionPerformed
+        kilep();
+    }//GEN-LAST:event_kilepesMenuActionPerformed
+
+    private void jRadioButton3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton3StateChanged
+        valtoz();
+    }//GEN-LAST:event_jRadioButton3StateChanged
+
+    private void jRadioButtonMenuItem2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem2StateChanged
+        valtoz();
+    }//GEN-LAST:event_jRadioButtonMenuItem2StateChanged
     
     
     /**
@@ -394,7 +450,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -404,6 +459,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
+    private javax.swing.JMenuItem kilepesMenu;
     private javax.swing.ButtonGroup menuRadioCsop;
     private javax.swing.JLabel nagyKep;
     // End of variables declaration//GEN-END:variables
